@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "goit-react-native",
-    "slug": "goit-react-native",
+    "name": "photo-blog",
+    "slug": "photo-blog",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,14 +27,20 @@
       "supportsTablet": true
     },
     "android": {
-      "permissions": ["CAMERA"],
+      "permissions": ["CAMERA", "android.permission.CAMERA", "android.permission.RECORD_AUDIO"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.steffko.photoblog"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e734f5ee-548f-4dee-96f6-5dd148991f5d"
+      }
     }
   }
 }
