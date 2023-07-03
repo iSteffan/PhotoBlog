@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import {
   Text,
   StyleSheet,
@@ -20,6 +20,7 @@ import { db, storage } from '../../Firebase/config';
 import * as MediaLibrary from 'expo-media-library';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { addDoc, collection } from 'firebase/firestore';
+import { useIsFocused } from '@react-navigation/native';
 
 const initialPost = {
   image: null,
@@ -33,6 +34,8 @@ const initialPost = {
 
 export default function CreatePostsScreen({ navigation }) {
   // const [location, setLocation] = useState('');
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [isNameFocused, setIsNameFocused] = useState(false);
   const [isLocationFocused, setIsLocationFocused] = useState(false);
@@ -45,6 +48,28 @@ export default function CreatePostsScreen({ navigation }) {
   const [post, setPost] = useState(initialPost);
   const { image, title, position } = post;
   const { userId, name } = useSelector(state => state.auth);
+
+  const isFocused = useIsFocused();
+
+  // get permissions to take photo and get location
+  useLayoutEffect(() => {
+    (async () => {
+      const cameraStatus = await Camera.requestCameraPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
+      requestPermission(cameraStatus === 'granted');
+      console.log(cameraStatus);
+    })();
+  }, [isFocused]);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+    })();
+  }, [isFocused]);
 
   const keyboardHide = () => {
     setIsKeyboardVisible(false);
@@ -132,7 +157,7 @@ export default function CreatePostsScreen({ navigation }) {
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           {!isKeyboardVisible && (
             <View>
-              <Camera style={styles.camera} ref={setCamera}>
+              <Camera style={styles.camera} ref={ref => setCamera(ref)} ratio="1:1">
                 <Pressable
                   onPress={takePhoto}
                   accessibilityLabel={'Add picture'}

@@ -5,11 +5,20 @@ import MapView, { Marker } from 'react-native-maps';
 const MapScreen = ({ route }) => {
   const [location, setLocation] = useState({});
 
+  // useEffect(() => {
+  //   if (route.params) {
+  //     setLocation({
+  //       latitude: route.params.location.latitude,
+  //       longitude: route.params.location.longitude,
+  //     });
+  //   }
+  // }, [route.params]);
+
   useEffect(() => {
     if (route.params) {
       setLocation({
-        latitude: route.params.location.latitude,
-        longitude: route.params.location.longitude,
+        latitude: parseFloat(route.params.location.latitude),
+        longitude: parseFloat(route.params.location.longitude),
       });
     }
   }, [route.params]);
