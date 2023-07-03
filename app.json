@@ -8,9 +8,29 @@
     "userInterfaceStyle": "light",
     "plugins": [
       [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow APP to access your photos.",
+          "savePhotosPermission": "Allow APP to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ],
+      [
         "expo-camera",
         {
           "cameraPermission": "Allow the APP to access your camera."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow APP to use your location."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
     ],
@@ -22,12 +42,19 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "infoPlist": {
-        "NSCameraUsageDescription": "possibility to take photos"
+        "NSCameraUsageDescription": "Allow the APP to access your camera.",
+        "NSLocationWhenInUseUsageDescription": "Allow the APP to use your location."
       },
       "supportsTablet": true
     },
     "android": {
-      "permissions": ["CAMERA", "android.permission.CAMERA", "android.permission.RECORD_AUDIO"],
+      "permissions": [
+        "CAMERA",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
